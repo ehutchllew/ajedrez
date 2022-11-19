@@ -1,0 +1,19 @@
+{
+  "name": "apprentice_assessment",
+  "packageManager": "yarn@3.2.4",
+  "scripts": {
+    "build": "npx swc src -d dist/src && npx swc index.ts -o dist/index.js",
+    "start": "node ./dist/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.3.18",
+    "@tsconfig/node16": "^1.0.3",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "typescript": "^4.8.4"
+  }
+}
