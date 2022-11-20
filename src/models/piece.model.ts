@@ -1,13 +1,13 @@
 import { POSSIBLE_DIRECTIONS } from "./moves.model";
 
 export enum PIECE_TYPE {
-  BISHOP,
-  EMPTY,
-  KING,
-  KNIGHT,
-  PAWN,
-  QUEEN,
-  ROOK,
+  BISHOP = "BISHOP",
+  EMPTY = "EMPTY",
+  KING = "KING",
+  KNIGHT = "KNIGHT",
+  PAWN = "PAWN",
+  QUEEN = "QUEEN",
+  ROOK = "ROOK",
 }
 
 export type ColorType = "black" | "white";
@@ -19,6 +19,8 @@ export type PieceType =
   | IPawn
   | IQueen
   | IRook;
+
+export type ToJSONPieceType = Omit<PieceType, "allowed" | "capture">;
 
 const allDirections = [
   POSSIBLE_DIRECTIONS.BACKWARD,
@@ -44,6 +46,7 @@ type BasePieceType<
       capture: Set<Extract<POSSIBLE_DIRECTIONS, TCapture[number]>>;
       color: ColorType;
       type: TPiece;
+      toJSON: () => ToJSONPieceType;
     }
   : {
       type: TPiece;
@@ -69,6 +72,13 @@ export function Bishop({ color }: IBishopParameters): IBishop {
     capture: new Set([POSSIBLE_DIRECTIONS.DIAGONAL]),
     color,
     type: PIECE_TYPE.BISHOP,
+    toJSON() {
+      return {
+        ...this,
+        allowed: [...this.allowed],
+        capture: [...this.capture],
+      };
+    },
   };
 }
 
@@ -108,6 +118,13 @@ export function King({ color, hasMoved }: IKingParameters): IKing {
     color,
     hasMoved,
     type: PIECE_TYPE.KING,
+    toJSON() {
+      return {
+        ...this,
+        allowed: [...this.allowed],
+        capture: [...this.capture],
+      };
+    },
   };
 }
 
@@ -147,6 +164,13 @@ export function Knight({ color }: IKnightParameters): IKnight {
     ]),
     color,
     type: PIECE_TYPE.KNIGHT,
+    toJSON() {
+      return {
+        ...this,
+        allowed: [...this.allowed],
+        capture: [...this.capture],
+      };
+    },
   };
 }
 
@@ -177,6 +201,13 @@ export function Pawn({ color, hasMoved }: IPawnParameters): IPawn {
     color,
     hasMoved,
     type: PIECE_TYPE.PAWN,
+    toJSON() {
+      return {
+        ...this,
+        allowed: [...this.allowed],
+        capture: [...this.capture],
+      };
+    },
   };
 }
 
@@ -200,6 +231,13 @@ export function Queen({ color }: IQueenParameters): IQueen {
     capture: new Set(allDirections),
     color,
     type: PIECE_TYPE.QUEEN,
+    toJSON() {
+      return {
+        ...this,
+        allowed: [...this.allowed],
+        capture: [...this.capture],
+      };
+    },
   };
 }
 
@@ -211,8 +249,16 @@ export function Queen({ color }: IQueenParameters): IQueen {
 export interface IRook
   extends BasePieceType<
     PIECE_TYPE.ROOK,
-    [POSSIBLE_DIRECTIONS.BACKWARD, POSSIBLE_DIRECTIONS.FORWARD],
-    [POSSIBLE_DIRECTIONS.BACKWARD, POSSIBLE_DIRECTIONS.FORWARD]
+    [
+      POSSIBLE_DIRECTIONS.BACKWARD,
+      POSSIBLE_DIRECTIONS.FORWARD,
+      POSSIBLE_DIRECTIONS.HORIZONTAL
+    ],
+    [
+      POSSIBLE_DIRECTIONS.BACKWARD,
+      POSSIBLE_DIRECTIONS.FORWARD,
+      POSSIBLE_DIRECTIONS.HORIZONTAL
+    ]
   > {
   hasMoved: boolean;
 }
@@ -225,13 +271,22 @@ export function Rook({ color, hasMoved }: IRookParameters): IRook {
     allowed: new Set([
       POSSIBLE_DIRECTIONS.BACKWARD,
       POSSIBLE_DIRECTIONS.FORWARD,
+      POSSIBLE_DIRECTIONS.HORIZONTAL,
     ]),
     capture: new Set([
       POSSIBLE_DIRECTIONS.BACKWARD,
       POSSIBLE_DIRECTIONS.FORWARD,
+      POSSIBLE_DIRECTIONS.HORIZONTAL,
     ]),
     color,
     hasMoved,
     type: PIECE_TYPE.ROOK,
+    toJSON() {
+      return {
+        ...this,
+        allowed: [...this.allowed],
+        capture: [...this.capture],
+      };
+    },
   };
 }
