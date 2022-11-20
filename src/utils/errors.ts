@@ -29,3 +29,10 @@ export class InvalidDataError extends BaseError {
     super(error);
   }
 }
+
+export class InternalServerError extends BaseError {
+  public statusCode = HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR;
+  constructor(error: string | Error) {
+    super(error);
+  }
+}

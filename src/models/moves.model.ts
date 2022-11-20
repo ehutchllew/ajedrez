@@ -1,4 +1,4 @@
-import { ColumnLetterType, RowNumberType } from "./board.model";
+import { TileNumberingType } from "./board.model";
 import { ColorType, PIECE_TYPE } from "./piece.model";
 
 export type MoveType = IBishopMove | IPawnMove;
@@ -12,8 +12,8 @@ export enum POSSIBLE_DIRECTIONS {
 
 type BaseMoveType<TPiece extends PIECE_TYPE> = {
   color: ColorType;
-  from: `${ColumnLetterType}${RowNumberType}`;
-  to: `${ColumnLetterType}${RowNumberType}`;
+  from: TileNumberingType;
+  to: TileNumberingType;
   type: TPiece;
 };
 
