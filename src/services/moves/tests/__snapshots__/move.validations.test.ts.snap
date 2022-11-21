@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Move Validations should throw an Invalid Data Error when validating against a type of (BISHOP) 1`] = `
+{
+  "message": "Bishop piece not yet supported",
+  "stack": Any<String>,
+  "statusCode": 422,
+}
+`;
+
+exports[`Move Validations should throw an Invalid Data Error when validating against a type of (KING) 1`] = `
+{
+  "message": "King piece not yet supported",
+  "stack": Any<String>,
+  "statusCode": 422,
+}
+`;
+
+exports[`Move Validations should throw an Invalid Data Error when validating against a type of (KNIGHT) 1`] = `
+{
+  "message": "Knight piece not yet supported",
+  "stack": Any<String>,
+  "statusCode": 422,
+}
+`;
+
+exports[`Move Validations should throw an Invalid Data Error when validating against a type of (QUEEN) 1`] = `
+{
+  "message": "Queen piece not yet supported",
+  "stack": Any<String>,
+  "statusCode": 422,
+}
+`;
+
+exports[`Move Validations should throw an Invalid Data Error when validating against a type of (ROOK) 1`] = `
+{
+  "message": "Rook piece not yet supported",
+  "stack": Any<String>,
+  "statusCode": 422,
+}
+`;

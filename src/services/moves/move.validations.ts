@@ -17,7 +17,7 @@ import {
 } from "src/utils/errors";
 
 export function validateMove(move: MoveType, gameState: IGame): void {
-  if (move.color !== gameState.playerTurn) {
+  if (move.color && move.color !== gameState.playerTurn) {
     throw new BadRequestError(
       `Invalid move: it's ${gameState.playerTurn}'s turn, but player attempted to move a ${move.color} piece`
     );

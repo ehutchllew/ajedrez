@@ -208,4 +208,4 @@ const projectsConfig = {
   ],
 };
 
-export default projectsConfig;
+module.exports = projectsConfig;
