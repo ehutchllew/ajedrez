@@ -1,6 +1,14 @@
 import { TileNumberingType } from "src/models/board.model";
 import { IGame } from "src/models/game.model";
-import { IBishopMove, IPawnMove, MoveType } from "src/models/moves.model";
+import {
+  IBishopMove,
+  IKingMove,
+  IKnightMove,
+  IPawnMove,
+  IQueenMove,
+  IRookMove,
+  MoveType,
+} from "src/models/moves.model";
 import { Empty, Pawn, PIECE_TYPE } from "src/models/piece.model";
 import {
   BadRequestError,
@@ -19,12 +27,27 @@ export function validateMove(move: MoveType, gameState: IGame): void {
     case PIECE_TYPE.BISHOP:
       validateBishopMove(move);
       break;
+    case PIECE_TYPE.KING:
+      validateKingMove(move);
+      break;
+    case PIECE_TYPE.KNIGHT:
+      validateKnightMove(move);
+      break;
     case PIECE_TYPE.PAWN:
       validatePawnMove(move, gameState.board);
       break;
+    case PIECE_TYPE.QUEEN:
+      validateQueenMove(move);
+      break;
+    case PIECE_TYPE.ROOK:
+      validateRookMove(move);
+      break;
     default:
+      const piecesMinusEmpty = Object.keys(PIECE_TYPE).filter(
+        (key) => key !== PIECE_TYPE.EMPTY
+      );
       throw new BadRequestError(
-        `Unsupported piece type. Expecting one of: (${Object.keys(PIECE_TYPE)})`
+        `Unsupported piece type. Expecting one of: (${piecesMinusEmpty})`
       );
   }
 }
@@ -33,6 +56,26 @@ function validateBishopMove(_: IBishopMove): void {
   throw new InvalidDataError("Bishop piece not yet supported");
 }
 
+function validateKingMove(_: IKingMove): void {
+  throw new InvalidDataError("King piece not yet supported");
+}
+
+function validateKnightMove(_: IKnightMove): void {
+  throw new InvalidDataError("Knight piece not yet supported");
+}
+
+function validateQueenMove(_: IQueenMove): void {
+  throw new InvalidDataError("Queen piece not yet supported");
+}
+
+function validateRookMove(_: IRookMove): void {
+  throw new InvalidDataError("Rook piece not yet supported");
+}
+
+/**
+ * FIXME: A lot of this logic could be hoisted to the more general `validateMove`.
+ * Like the `determineIndicesOfPieceMovement` and `gameState` accessing.
+ */
 function validatePawnMove(
   move: IPawnMove,
   gameState: IGame["board"]
