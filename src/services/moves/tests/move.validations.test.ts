@@ -50,4 +50,7 @@ describe("Move Validations", () => {
       );
     }
   });
+
+  // TODO: Fill this out!
+  describe("PAWN Move Validations", () => {});
 });
