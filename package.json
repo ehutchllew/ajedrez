@@ -10,7 +10,8 @@
     "test:e2e": "npx jest --selectProjects e2e"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongo": "^0.1.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.57",

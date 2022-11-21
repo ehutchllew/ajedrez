@@ -1,0 +1,17 @@
+version: '3'
+services:
+  ajedrez-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: node-app
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    container_name: mongo-db
+    
