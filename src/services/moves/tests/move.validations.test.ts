@@ -1,6 +1,6 @@
 import { MoveType } from "src/models/moves.model";
 import { IEmpty, PIECE_TYPE } from "src/models/piece.model";
-import { createGame } from "src/services/game/post/post.service";
+import { createGame } from "src/services/game/post.service";
 import { BadRequestError, InvalidDataError } from "src/utils/errors";
 import { validateMove } from "../move.validations";
 

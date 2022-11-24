@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createGame } from "src/services/game/post/post.service";
+import { createGame } from "src/services/game/post.service";
 
 export function post(req: Request, res: Response) {
   try {

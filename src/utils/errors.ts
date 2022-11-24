@@ -23,6 +23,13 @@ export class BadRequestError extends BaseError {
   }
 }
 
+export class InternalServerError extends BaseError {
+  public statusCode = HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR;
+  constructor(error: string | Error) {
+    super(error);
+  }
+}
+
 export class InvalidDataError extends BaseError {
   public statusCode = HTTP_STATUS_CODE.INVALID_DATA;
   constructor(error: string | Error) {
@@ -30,9 +37,21 @@ export class InvalidDataError extends BaseError {
   }
 }
 
-export class InternalServerError extends BaseError {
-  public statusCode = HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR;
+export class NotImplementedError extends BaseError {
+  public statusCode = HTTP_STATUS_CODE.NOT_IMPLEMENTED;
   constructor(error: string | Error) {
     super(error);
   }
 }
+
+export type HutchErrorType =
+  | BadRequestError
+  | InternalServerError
+  | InvalidDataError
+  | NotImplementedError;
+
+export const isHutchError = (err: any) =>
+  err instanceof BadRequestError ||
+  err instanceof InternalServerError ||
+  err instanceof InvalidDataError ||
+  err instanceof NotImplementedError;
