@@ -1,9 +1,7 @@
-import { appConfig } from "appConfig";
+import { AppConfig } from "./appConfig";
 import express from "express";
-import { setupDb } from "src/data/db";
+import { MongoClient } from "mongodb";
 
-async function setup() {
-  appConfig({ app: express(), db: await setupDb() });
-}
+const app = new AppConfig(MongoClient, express);
 
-setup();
+app.init();

@@ -1,2 +1,2 @@
-export { gameRoutes } from "./game";
+export { createGameRoutes } from "./game";
 export { movesRoutes } from "./moves";
