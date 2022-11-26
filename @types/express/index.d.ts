@@ -3,4 +3,8 @@ declare namespace Express {
     requestId?: string;
     session?: {};
   }
+
+  export interface Response {
+    isReturning: boolean;
+  }
 }
