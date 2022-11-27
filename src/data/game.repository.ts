@@ -26,8 +26,9 @@ export function createGameRepository(
         deletedCount: deleteResult.ok,
       };
     },
-    getGameById(id: string) {
-      return collection.findOne({ _id: id });
+    async getGameById(id: string) {
+      const foundGame = await collection.findOne({ _id: id });
+      return foundGame;
     },
     async updateGame(gameUpdate: IGame) {
       await collection.findOneAndUpdate({ _id: gameUpdate._id }, gameUpdate);
