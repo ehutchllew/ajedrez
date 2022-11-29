@@ -5,7 +5,7 @@ export interface IGameRepository {
   createGame(game: IGame): Promise<IGame>;
   deleteGame(id: string): Promise<DeleteResult>;
   getGameById(id: string): Promise<WithId<IGame> | null>;
-  updateGame(gameUpdate: Partial<IGame>): Promise<IGame>;
+  updateGame(gameUpdate: IGame): Promise<IGame>;
 }
 export function createGameRepository(
   collection: Collection<IGame>

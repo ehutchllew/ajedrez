@@ -37,6 +37,13 @@ export class InvalidDataError extends BaseError {
   }
 }
 
+export class NotFoundError extends BaseError {
+  public statusCode = HTTP_STATUS_CODE.NOT_FOUND;
+  constructor(error: string | Error) {
+    super(error);
+  }
+}
+
 export class NotImplementedError extends BaseError {
   public statusCode = HTTP_STATUS_CODE.NOT_IMPLEMENTED;
   constructor(error: string | Error) {
@@ -48,6 +55,7 @@ export type HutchErrorType =
   | BadRequestError
   | InternalServerError
   | InvalidDataError
+  | NotFoundError
   | NotImplementedError;
 
 export const isHutchError = (err: any) =>

@@ -6,7 +6,7 @@ import { createLogsRepository } from "src/data/logs.repository";
 import { COLLECTION_TYPES } from "src/data/types";
 import { errorHandlerMiddleware } from "src/middleware/errorHandler.middleware";
 import { loggerMiddleware } from "src/middleware/logger.middleware";
-import { createGameRoutes, movesRoutes } from "src/routes";
+import { createGameRoutes } from "src/routes";
 import { createGameService } from "src/services/game/game.service";
 import { createLogger } from "src/utils/logger";
 

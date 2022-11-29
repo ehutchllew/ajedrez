@@ -1,4 +1,5 @@
 import { IGame } from "src/models/game.model";
+import { MoveType } from "src/models/moves.model";
 import {
   Bishop,
   Empty,
@@ -100,3 +101,8 @@ export function generateNewBoard(): IGame["board"] {
     ],
   ];
 }
+
+export function updateGameStateFromMove(
+  move: MoveType,
+  dbGameState: IGame
+): IGame {}

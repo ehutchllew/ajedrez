@@ -1,7 +1,18 @@
-import { PieceType, PIECE_TYPE } from "./piece.model";
+import { PieceType } from "./piece.model";
 
-export type ColumnLetterType = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
-export type RowNumberType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export const ColumnLetterList = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+] as const;
+export const RowNumberList = ["1", "2", "3", "4", "5", "6", "7", "8"] as const;
+export type ColumnLetterType = typeof ColumnLetterList[number];
+export type RowNumberType = typeof RowNumberList[number];
 export type TileNumberingType = `${ColumnLetterType}${RowNumberType}`;
 
 export type RowType<TRow extends RowNumberType> = [

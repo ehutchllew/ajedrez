@@ -1,4 +1,9 @@
-import { TileNumberingType } from "src/models/board.model";
+import {
+  ColumnLetterList,
+  ColumnLetterType,
+  RowNumberList,
+  RowNumberType,
+} from "src/models/board.model";
 import { IGame } from "src/models/game.model";
 import {
   IBishopMove,
@@ -15,9 +20,44 @@ import {
   InternalServerError,
   InvalidDataError,
 } from "src/utils/errors";
+import { determineIndicesOfPieceLocation, determineVector } from "./move.utils";
 
 export function validateMove(move: MoveType, gameState: IGame): void {
+  if (!move.from && !move.to && !move.type) {
+    throw new BadRequestError("Missing required properties: [from, to, type]");
+  }
+
+  const fromColumn = move.from![0] as ColumnLetterType;
+  const fromRow = move.from![1] as RowNumberType;
+  if (
+    !ColumnLetterList.includes(fromColumn) ||
+    !RowNumberList.includes(fromRow)
+  ) {
+    throw new BadRequestError("Invalid starting point, received: " + move.from);
+  }
+
+  const toColumn = move.to![0] as ColumnLetterType;
+  const toRow = move.to![1] as RowNumberType;
+  if (!ColumnLetterList.includes(toColumn) || !RowNumberList.includes(toRow)) {
+    throw new BadRequestError("Invalid ending point, received: " + move.to);
+  }
+
   if (move.color && move.color !== gameState.playerTurn) {
+    throw new BadRequestError(
+      `Invalid move: it's ${gameState.playerTurn}'s turn, but player attempted to move a ${move.color} piece`
+    );
+  }
+
+  const [movedPieceRow, movedPieceColumn] = determineIndicesOfPieceLocation(
+    move.from
+  );
+  const movedTileState = gameState.board[movedPieceRow][movedPieceColumn];
+  const movedPiece = movedTileState[1];
+  if (
+    !move.color &&
+    movedPiece.type !== PIECE_TYPE.EMPTY &&
+    movedPiece.color === gameState.playerTurn
+  ) {
     throw new BadRequestError(
       `Invalid move: it's ${gameState.playerTurn}'s turn, but player attempted to move a ${move.color} piece`
     );
@@ -81,7 +121,7 @@ function validatePawnMove(
   gameState: IGame["board"]
 ): IGame["board"] {
   const { color, from, to } = move;
-  const [fromXIndex, fromYIndex] = determineIndicesOfPieceMovement(from);
+  const [fromXIndex, fromYIndex] = determineIndicesOfPieceLocation(from);
   const fromTileState = gameState[fromXIndex][fromYIndex];
   const piece = fromTileState[1];
 
@@ -106,7 +146,7 @@ function validatePawnMove(
     );
   }
 
-  const [toXIndex, toYIndex] = determineIndicesOfPieceMovement(to);
+  const [toXIndex, toYIndex] = determineIndicesOfPieceLocation(to);
   const toTileState = gameState[toXIndex][toYIndex];
   if (dx > 0 && toTileState[1].type === Empty().type) {
     throw new BadRequestError(
@@ -139,36 +179,4 @@ function validatePawnMove(
   gameState[toXIndex][toYIndex] = newToTileState;
 
   return gameState;
-}
-
-/**
- *
- * TODO: Expand this to include indices of ENTIRE path. Perhaps as Array<[number, number]>
- * that way we can support pieces that aren't of type `IPawn`.
- */
-function determineIndicesOfPieceMovement(
-  to: TileNumberingType
-): [number, number] {
-  const [columnPosition, rowPosition] = to.split("");
-  const rowIndex = parseInt(rowPosition) - 1;
-  const columnIndex = columnPosition.charCodeAt(0) - "a".charCodeAt(0);
-  return [rowIndex, columnIndex];
-}
-
-/**
- *
- * FIXME: could probably get rid of this by just comparing:
- * `determineIndicesOfPieceMovement(from)` and `determineIndicesOfPieceMovement(to)`
- */
-function determineVector(
-  from: IPawnMove["from"],
-  to: IPawnMove["to"]
-): [number, number] {
-  const [fromColumn, fromRow] = from.split("");
-  const [toColumn, toRow] = to.split("");
-
-  const columnDistance = toColumn.charCodeAt(0) - fromColumn.charCodeAt(0);
-  const rowDistance = parseInt(toRow) - parseInt(fromRow);
-
-  return [rowDistance, columnDistance];
 }

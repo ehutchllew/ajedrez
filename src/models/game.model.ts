@@ -5,14 +5,14 @@ import { ColorType } from "./piece.model";
 export interface IGame {
   _id: string;
   board: [
-    RowType<1>,
-    RowType<2>,
-    RowType<3>,
-    RowType<4>,
-    RowType<5>,
-    RowType<6>,
-    RowType<7>,
-    RowType<8>
+    RowType<"1">,
+    RowType<"2">,
+    RowType<"3">,
+    RowType<"4">,
+    RowType<"5">,
+    RowType<"6">,
+    RowType<"7">,
+    RowType<"8">
   ];
   history: MoveType[];
   playerTurn: ColorType;
