@@ -46,9 +46,18 @@ export class AppDb {
     name: COLLECTION_TYPES
   ): MongoCallback<ICollection<CollectionReturnType[COLLECTION_TYPES]>> {
     switch (name) {
+      case COLLECTION_TYPES.GAMES:
+        return (err, result) => {
+          if (err)
+            console.error("Failed to create collection::: ", name, "\n", err);
+          else {
+            console.log("Created collection: ", name, "\n", result);
+          }
+        };
       case COLLECTION_TYPES.LOGS:
         return (err, result) => {
-          if (err) console.error("Failed to create collection: ", name);
+          if (err)
+            console.error("Failed to create collection::: ", name, "\n", err);
           else {
             result?.createIndex("path", { unique: false });
           }

@@ -3,6 +3,8 @@
   "packageManager": "yarn@3.2.4",
   "scripts": {
     "build": "npx swc src -d dist/src && npx swc index.ts -o dist/index.js && npx swc appConfig.ts -o dist/appConfig.js",
+    "docker": "docker compose build && docker compose up",
+    "nuke": "rm -rf ./dist && docker compose down",
     "start": "node ./dist/index.js",
     "tc": "npx tsc --noEmit",
     "test:unit": "npx jest --selectProjects test --passWithNoTests",

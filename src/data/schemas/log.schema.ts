@@ -3,7 +3,7 @@ export const logSchema = {
     required: ["createdAt", "hasError", "ips", "method", "path", "statusCode"],
     properties: {
       createdAt: {
-        bsonType: "int",
+        bsonType: "double",
         description:
           "millisecond representation of when the request record was created",
       },
@@ -55,7 +55,7 @@ export const logSchema = {
           "list of allowable status codes relating to the result/response of the processed request",
       },
       updatedAt: {
-        bsonType: "int",
+        bsonType: "double",
         description:
           "millisecond representation of when the request record was updated",
       },

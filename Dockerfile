@@ -9,4 +9,4 @@ RUN yarn build
 
 COPY ./dist ./dist
 
-CMD ["yarn", "start"]
+CMD yarn start

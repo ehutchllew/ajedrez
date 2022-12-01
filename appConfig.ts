@@ -8,14 +8,15 @@ import { errorHandlerMiddleware } from "src/middleware/errorHandler.middleware";
 import { loggerMiddleware } from "src/middleware/logger.middleware";
 import { createGameRoutes } from "src/routes";
 import { createGameService } from "src/services/game/game.service";
+import { generateUUID } from "src/utils/generateUUID";
 import { createLogger } from "src/utils/logger";
 
 export class AppConfig {
   protected readonly __DEV__ = process.env.__DEV__;
   protected readonly DATABASE_NAME = "chess";
   protected readonly MONGO_CONNECTION_STRING =
-    process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017";
-  protected readonly API_PORT = process.env.API_PORT || 3000;
+    process.env.MONGO_CONNECTION_STRING || "mongodb://mongo-db:27017";
+  protected readonly API_PORT = process.env.API_PORT || 8080;
   protected readonly SESS_LIFETIME = process.env.SESS_LIFETIME || "600000";
   protected readonly SESS_NAME = process.env.SESS_NAME || "sid";
   protected readonly SESS_SECRET = process.env.SESS_SECRET || "s3cr3ts!lol";
@@ -30,7 +31,7 @@ export class AppConfig {
       const db = await this.setupDb();
       this.setupApp(db);
     } catch (e) {
-      console.error(e);
+      console.error("ERROR INITIALIZING SERVER:::", e);
     }
   }
 
@@ -52,7 +53,7 @@ export class AppConfig {
       res.header({
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Method": "POST, GET, OPTIONS",
+        "Access-Control-Allow-Method": "POST, PUT, GET, OPTIONS",
         "Access-Control-Allow-Max-Age": "86400",
         "Access-Control-Allow-Credentials": "true",
         Vary: "Origin",
@@ -61,17 +62,14 @@ export class AppConfig {
       next();
     });
 
-    if (this.__DEV__ === "true") {
-      app.use(
-        this.ExpressRef.json({
-          type: ["application/json", "text/plain"],
-        })
-      );
-    } else {
-      app.use(this.ExpressRef.json());
-    }
-
     app.disable("x-powered-by");
+
+    app.use((req, _, next) => {
+      req.requestId = generateUUID();
+      next();
+    });
+
+    this.configureRoutes(app, db);
 
     const logger = createLogger(
       createLogsRepository(db.collection(COLLECTION_TYPES.LOGS))
@@ -79,10 +77,8 @@ export class AppConfig {
     app.use(loggerMiddleware(logger));
     app.use(errorHandlerMiddleware(logger));
 
-    this.configureRoutes(app, db);
-
     app.listen(this.API_PORT, () => {
-      console.log("Server is connected on: ", this.API_PORT);
+      console.log("Server is connected on::: ", this.API_PORT);
     });
   }
 
@@ -93,8 +89,6 @@ export class AppConfig {
       return new AppDb(await client.db(this.DATABASE_NAME));
     } catch (err) {
       throw new Error("Problem connecting to database.");
-    } finally {
-      client.close();
     }
   }
 }

@@ -4,7 +4,7 @@ export interface ILog {
   _id: string;
   createdAt: number;
   data?: string;
-  error?: string;
+  error: string | Error;
   hasError: boolean;
   ips: string[] | string;
   method: string;
