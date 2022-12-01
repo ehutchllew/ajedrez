@@ -1,5 +1,6 @@
 import { TileNumberingType } from "src/models/board.model";
-import { IPawnMove } from "src/models/moves.model";
+import { IGame } from "src/models/game.model";
+import { IPawnMove, MoveType } from "src/models/moves.model";
 
 /**
  *
@@ -27,8 +28,16 @@ export function determineVector(
   const [fromColumn, fromRow] = from.split("");
   const [toColumn, toRow] = to.split("");
 
-  const columnDistance = toColumn.charCodeAt(0) - fromColumn.charCodeAt(0);
-  const rowDistance = parseInt(toRow) - parseInt(fromRow);
+  const rowDistance = toColumn.charCodeAt(0) - fromColumn.charCodeAt(0);
+  const columnDistance = parseInt(toRow) - parseInt(fromRow);
 
   return [rowDistance, columnDistance];
+}
+
+export function getMovedPiece(move: MoveType, gameState: IGame) {
+  const [movedPieceRow, movedPieceColumn] = determineIndicesOfPieceLocation(
+    move.from
+  );
+  const movedTileState = gameState.board[movedPieceRow][movedPieceColumn];
+  return movedTileState[1];
 }

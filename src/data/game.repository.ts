@@ -31,7 +31,16 @@ export function createGameRepository(
       return foundGame;
     },
     async updateGame(gameUpdate: IGame) {
-      await collection.findOneAndUpdate({ _id: gameUpdate._id }, gameUpdate);
+      await collection.findOneAndUpdate(
+        { _id: gameUpdate._id },
+        {
+          $set: {
+            board: gameUpdate.board,
+            history: gameUpdate.history,
+            playerTurn: gameUpdate.playerTurn,
+          },
+        }
+      );
 
       return gameUpdate;
     },

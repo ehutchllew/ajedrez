@@ -62,6 +62,8 @@ export class AppConfig {
       next();
     });
 
+    app.use(express.json());
+
     app.disable("x-powered-by");
 
     app.use((req, _, next) => {
@@ -75,6 +77,7 @@ export class AppConfig {
       createLogsRepository(db.collection(COLLECTION_TYPES.LOGS))
     );
     app.use(loggerMiddleware(logger));
+    app.use((_, res) => (res.payload ? res.send(res.payload) : res.send()));
     app.use(errorHandlerMiddleware(logger));
 
     app.listen(this.API_PORT, () => {

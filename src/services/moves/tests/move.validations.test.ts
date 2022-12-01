@@ -1,12 +1,18 @@
+import { Game } from "src/models/game.model";
 import { MoveType } from "src/models/moves.model";
-import { IEmpty, PIECE_TYPE } from "src/models/piece.model";
-import { createGame } from "src/services/game/post.service";
+import { PIECE_TYPE } from "src/models/piece.model";
+import { generateNewBoard } from "src/services/game/game.utils";
 import { BadRequestError, InvalidDataError } from "src/utils/errors";
 import { validateMove } from "../move.validations";
 
 describe("Move Validations", () => {
   const pieceTypes = Object.values(PIECE_TYPE);
-
+  const mockGame = Game({
+    _id: "asdfasdfasdf",
+    board: generateNewBoard(),
+    history: [],
+    playerTurn: "white",
+  });
   pieceTypes.forEach((piece) => {
     if (piece === PIECE_TYPE.PAWN || piece === PIECE_TYPE.EMPTY) return;
     it(`should throw an Invalid Data Error when validating against a type of (${piece})`, () => {
@@ -17,7 +23,7 @@ describe("Move Validations", () => {
           color: "white",
           type: piece,
         };
-        validateMove(moveType, createGame());
+        validateMove(moveType, mockGame);
       } catch (err) {
         expect(err).toBeInstanceOf(InvalidDataError);
         expect(err).toMatchSnapshot({
@@ -27,13 +33,13 @@ describe("Move Validations", () => {
     });
   });
 
-  it("should trhow a Bad Request Error when validating against EMPTY or an unknown piece type", () => {
+  it("should throw a Bad Request Error when validating against EMPTY or an unknown piece type", () => {
     try {
       const moveType: MoveType = {
         // @ts-expect-error
         type: PIECE_TYPE.EMPTY,
       };
-      validateMove(moveType, createGame());
+      validateMove(moveType, mockGame);
     } catch (err) {
       expect(err).toBeInstanceOf(BadRequestError);
       expect(err).toMatchInlineSnapshot(

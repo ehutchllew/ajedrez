@@ -16,7 +16,7 @@ $ yarn build
 ### Starting the server
 
 ```sh
-$ yarn start
+$ yarn docker
 ```
 
 ## Testing & Type Checking

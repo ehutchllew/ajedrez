@@ -1,5 +1,5 @@
 {
-  "name": "apprentice_assessment",
+  "name": "ajedrez",
   "packageManager": "yarn@3.2.4",
   "scripts": {
     "build": "npx swc src -d dist/src && npx swc index.ts -o dist/index.js && npx swc appConfig.ts -o dist/appConfig.js",

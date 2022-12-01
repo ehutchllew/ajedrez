@@ -1,4 +1,4 @@
-import { IGame } from "src/models/game.model";
+import { Game, IGame } from "src/models/game.model";
 import { MoveType } from "src/models/moves.model";
 import {
   Bishop,
@@ -6,16 +6,32 @@ import {
   King,
   Knight,
   Pawn,
+  PIECE_TYPE,
   Queen,
   Rook,
 } from "src/models/piece.model";
+import {
+  determineIndicesOfPieceLocation,
+  getMovedPiece,
+} from "../moves/move.utils";
 
-// export function deriveBoardFromHistory(
-//   history: IGame["history"]
-// ): IGame["board"] {
-//   const newBoard = generateNewBoard();
+/**
+ *
+ * UNTESTED
+ */
+export function deriveGameFromHistory(history: IGame["history"]): IGame {
+  let newGame = Game({
+    _id: "",
+    board: generateNewBoard(),
+    history,
+    playerTurn: "white",
+  });
 
-// }
+  history.forEach((move) => {
+    newGame = updateGameStateFromMove(move, newGame);
+  });
+  return newGame;
+}
 
 export function generateNewBoard(): IGame["board"] {
   return [
@@ -105,4 +121,22 @@ export function generateNewBoard(): IGame["board"] {
 export function updateGameStateFromMove(
   move: MoveType,
   dbGameState: IGame
-): IGame {}
+): IGame {
+  const [fromRowIndex, fromColumnIndex] = determineIndicesOfPieceLocation(
+    move.from
+  );
+  const [toRowIndex, toColumnIndex] = determineIndicesOfPieceLocation(move.to);
+
+  dbGameState.board[fromRowIndex][fromColumnIndex][1] = Empty();
+
+  const movedPiece = getMovedPiece(move, dbGameState);
+  // FIXME: Create a PieceFactory -> PieceFactory(move.type)
+  dbGameState.board[toRowIndex][toColumnIndex][1] = Pawn({
+    color:
+      move.color || (movedPiece.type !== PIECE_TYPE.EMPTY && movedPiece.color),
+    hasMoved: true,
+  });
+  dbGameState.history.unshift(move);
+
+  return dbGameState;
+}

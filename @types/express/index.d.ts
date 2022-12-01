@@ -5,6 +5,6 @@ declare namespace Express {
   }
 
   export interface Response {
-    isReturning: boolean;
+    payload: any;
   }
 }

@@ -20,12 +20,13 @@ export function put(service: IService<MoveType, IGame>): RequestHandler {
         );
       }
 
-      const body = JSON.parse(req.body);
-      const updatedGame = await service.put(gameId, body);
-      res.status(HTTP_STATUS_CODE.OK).send({
+      const updatedGame = await service.put(gameId, req.body);
+      res.status(HTTP_STATUS_CODE.OK);
+      res.payload = {
         ...updatedGame,
         requestId: req.requestId,
-      });
+      };
+      next();
     } catch (e) {
       next(e);
     }

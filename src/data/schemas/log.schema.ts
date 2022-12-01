@@ -50,7 +50,7 @@ export const logSchema = {
         description: "stringified dictionary/object of query parameters",
       },
       statusCode: {
-        enum: [200, 400, 401, 403, 404, 405, 409, 422, 429, 500, 501],
+        enum: [200, 201, 204, 400, 401, 403, 404, 405, 409, 422, 429, 500, 501],
         description:
           "list of allowable status codes relating to the result/response of the processed request",
       },

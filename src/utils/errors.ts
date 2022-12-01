@@ -62,4 +62,5 @@ export const isHutchError = (err: any) =>
   err instanceof BadRequestError ||
   err instanceof InternalServerError ||
   err instanceof InvalidDataError ||
+  err instanceof NotFoundError ||
   err instanceof NotImplementedError;
