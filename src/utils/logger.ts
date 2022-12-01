@@ -51,7 +51,7 @@ export function createLogger(repo: ILogsRepository) {
       }
     },
 
-    async getLog(id: string) {
+    async getLog(_: string) {
       try {
       } finally {
       }
